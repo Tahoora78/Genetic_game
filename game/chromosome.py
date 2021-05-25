@@ -15,7 +15,7 @@ class Population:
         while count != 200:
             p = ""
             for j in range(len(self.level)):
-                t = random.randint(0,2)
+                t = random.randint(0, 2)
                 p = p + str(t)
             self.population_score[p] = 0
             if count != len(self.population_score):
