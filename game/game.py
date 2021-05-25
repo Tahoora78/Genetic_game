@@ -39,6 +39,16 @@ class Game:
                 break
         return steps == self.current_level_len - 1, steps
 
+    # TODO: check if this level is possible
+    def check_possible(self):
+        levels = []
+        for i in self.levels:
+            for j in range(len(i)-1):
+                if not(i[j]=='G' and i[j+1]=='L' or i[j]=='L' and i[j+1]=='G'):
+                    levels.__add__(i)
+
+
+
 g = Game(["____G__L__", "___G_M___L_"])
 g.load_next_level()
 
