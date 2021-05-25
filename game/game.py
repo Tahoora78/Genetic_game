@@ -4,12 +4,21 @@ class Game:
         # Store level length to determine if a sequence of action passes all the steps
 
         self.levels = levels
+        self.scores = []
         self.current_level_index = -1
         self.current_level_len = 0
     
     def load_next_level(self):
         self.current_level_index += 1
         self.current_level_len = len(self.levels[self.current_level_index])
+
+    # TODO: calculate the scores
+
+
+    # TODO:
+    def playEachLevel(self):
+        # make chromosomes
+        pass
     
     def get_score(self, actions):
         # Get an action sequence and determine the steps taken/score
