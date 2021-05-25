@@ -1,12 +1,17 @@
 import random
-
+import outputReport
 
 class Population:
+    average = []
+    best = []
+    worst = []
+    selectList = dict()
+    pop_score = dict()
     def __init__(self, level):
 
         self.level = level
-        self.population_score = dict()
-        self.selectList = None
+        #self.population_score = dict()
+        #self.selectList = None
 
 
     # TODO: make 200 chromosome
@@ -24,8 +29,8 @@ class Population:
                     while t == 2 and p[j - 1] == '2':
                         t = random.randint(0, 2)
                 p = p + str(t)
-            self.population_score[p] = 0
-            if count != len(self.population_score):
+            Population.pop_score[p] = 0
+            if count != len(Population.pop_score):
                 count += 1
 
     # check success or not
@@ -66,21 +71,27 @@ class Population:
 
     def calculateScore(self):
         #self.population_score[chromosome]=0
-        for i in self.population_score.keys():
+        for i in Population.pop_score.keys():
             score = self.check_success(i)
-            print("scoreee", score)
             if score==len(i):
                 score += 5
             score += self.mashroom_hit(i)
             score += self.kill_Gumpa(i)
-            self.population_score[i]=score
+            Population.pop_score[i]=score
 
     # select based on scores
     # select the best half of population
     def select(self):
-        population_score = {k: v for k, v in sorted(self.population_score.items(), key=lambda item: item[1])}
-        self.selectList = {k: population_score[k] for k in list(population_score)[100:]}
-        print("len", len(self.selectList))
+        population_score = {k: v for k, v in sorted(Population.pop_score.items(), key=lambda item: item[1])}
+        print("population ", len(population_score))
+        Population.worst.append(list(Population.pop_score.items())[0][1])
+        Population.best.append(list(Population.pop_score.items())[-1][1])
+        filtered_vals = [v for _, v in population_score.items()]
+        Population.average.append(sum(filtered_vals) / len(filtered_vals))
+        Population.selectList = {k: population_score[k] for k in list(population_score)[100:]}
+        print("length", len(population_score))
+        print("len populY",len(Population.pop_score))
+
 
     def check_repeat(self, chromosome):
         for i in range(len(chromosome)-1):
@@ -89,8 +100,8 @@ class Population:
         return True
 
     def crossOver(self):
-        population = dict()
 
+        population = dict()
         count = 0
         while count < 200:
             parent1 = random.randint(0, 99)
@@ -98,9 +109,9 @@ class Population:
 
             while (True):
                 t = random.randint(1, len(self.level))
-
-                parent1str = list(self.selectList.items())[parent1][0]
-                parent2str = list(self.selectList.items())[parent2][0]
+                print("len list ",len(Population.selectList))
+                parent1str = list(Population.selectList.items())[parent1][0]
+                parent2str = list(Population.selectList.items())[parent2][0]
 
                 child1 = parent1str[:t] + parent2str[t:]
                 child2 = parent2str[:t] + parent1str[t:]
@@ -119,7 +130,8 @@ class Population:
             print("child , parent 1", child1, parent1str)
             print("child , parent 2", child2, parent2str)
 
-        self.population_score = population
+        print("len population:: ", len(population))
+        Population.pop_score = population
 
     def mutation(self):
         population = dict()
@@ -127,20 +139,30 @@ class Population:
             t = random.randint(0, 10)
             print("t in mu", t)
             if t < 2:
-                if '1' in list(self.population_score.items())[i][0]:
-                    s = list(self.population_score.items())[i][0]
+                if '1' in list(Population.pop_score.items())[i][0]:
+                    s = list(Population.pop_score.items())[i][0]
                     s = s.replace('1', '0', 1)
                     population[s] = 0
             else:
-                population[list(self.population_score.items())[i][0]] = 0
+                population[list(Population.pop_score.items())[i][0]] = 0
 
-        self.population_score = population
+        Population.pop_score = population
 
-
+    def calling_methods(self):
+        self.makePopulation()
+        for i in range(10):
+            print("i::", i)
+            print("io", i," ",Population.pop_score)
+            print("selected",Population.selectList)
+            self.calculateScore()
+            print("len list_select", len(self.selectList))
+            self.select()
+            self.crossOver()
+            self.mutation()
+            #self.calculateScore()
+            print("i:", i)
+        print("population best", Population.average)
+        outputReport.drawing_average_best_worst(Population.average, Population.best, Population.worst)
 
 chromosome = Population('__G__M__')
-chromosome.makePopulation()
-chromosome.calculateScore()
-chromosome.select()
-chromosome.crossOver()
-chromosome.mutation()
+chromosome.calling_methods()
