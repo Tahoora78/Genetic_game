@@ -1,56 +1,28 @@
+import chromosome
+
 class Game:
     def __init__(self, levels):
         # Get a list of strings as levels
         # Store level length to determine if a sequence of action passes all the steps
-
         self.levels = levels
         self.scores = []
-        self.current_level_index = -1
-        self.current_level_len = 0
-    
-    def load_next_level(self):
-        self.current_level_index += 1
-        self.current_level_len = len(self.levels[self.current_level_index])
 
-    # TODO: calculate the scores
-
-
-    # TODO:
     def playEachLevel(self):
-        # make chromosomes
-        pass
-    
-    def get_score(self, actions):
-        # Get an action sequence and determine the steps taken/score
-        # Return a tuple, the first one indicates if these actions result in victory
-        # and the second one shows the steps taken
-
-        current_level = self.levels[self.current_level_index]
-        steps = 0
-        for i in range(self.current_level_len - 1):
-            current_step = current_level[i]
-            if (current_step == '_'):
-                steps += 1
-            elif (current_step == 'G' and actions[i - 1] == '1'):
-                steps += 1
-            elif (current_step == 'L' and actions[i - 1] == '2'):
-                steps += 1
-            else:
-                break
-        return steps == self.current_level_len - 1, steps
-
-    # TODO: check if this level is possible
-    def check_possible(self):
-        levels = []
         for i in self.levels:
-            for j in range(len(i)-1):
-                if not(i[j]=='G' and i[j+1]=='L' or i[j]=='L' and i[j+1]=='G'):
-                    levels.__add__(i)
+            if self.check_possible(i):
+                ch = chromosome.Population(i)
+                s = ch.calling_methods()
+                self.scores.append(s)
+                print("level" , i, "score:", s)
+            else:
+                print("goal is not accessible")
 
-
+    # check if this level is possible
+    def check_possible(self, level):
+        for j in range(len(level)-1):
+            if (level[j]=='G' and level[j+1]=='L' or level[j]=='L' and level[j+1]=='G'):
+                return False
+        return True
 
 g = Game(["____G__L__", "___G_M___L_"])
-g.load_next_level()
-
-# This outputs (False, 4)
-print(g.get_score("0000000000"))
+g.playEachLevel()

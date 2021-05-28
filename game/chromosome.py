@@ -10,11 +10,8 @@ class Population:
     def __init__(self, level):
 
         self.level = level
-        #self.population_score = dict()
-        #self.selectList = None
 
-
-    # TODO: make 200 chromosome
+    # make 200 chromosome
     def makePopulation(self):
         # initialize the population
         count = 0
@@ -172,10 +169,13 @@ class Population:
             self.select()
             self.crossOver()
             self.mutation()
-            #self.calculateScore()
             print("i:L", i,"popscore", len(Population.pop_score))
+
         print("population best", Population.average)
         outputReport.drawing_average_best_worst(Population.average, Population.best, Population.worst)
 
-chromosome = Population('__G__M__')
-chromosome.calling_methods()
+        return max(Population.best)
+
+
+#chromosome = Population('__G__M__')
+#print(chromosome.calling_methods())
