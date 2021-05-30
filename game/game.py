@@ -1,4 +1,7 @@
 import chromosome
+import random
+import outputReport
+
 
 class Game:
     def __init__(self, levels):
@@ -13,7 +16,9 @@ class Game:
                 ch = chromosome.Population(i)
                 s = ch.calling_methods()
                 self.scores.append(s)
-                print("level" , i, "score:", s)
+                del ch
+                #self.scores.append(chromosome.Population(i).calling_methods())
+                print("level", i, "score:", self.scores[-1])
             else:
                 print("goal is not accessible")
 
@@ -24,5 +29,5 @@ class Game:
                 return False
         return True
 
-g = Game(["____G__L__", "___G_M___L_"])
+g = Game(["__G___L_", "__M_____", "____G_____","__G__G_L___","__G__G_L___"])
 g.playEachLevel()
