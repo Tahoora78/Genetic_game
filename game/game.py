@@ -1,4 +1,4 @@
-import chromosome
+import population
 import random
 import outputReport
 
@@ -13,14 +13,16 @@ class Game:
     def playEachLevel(self):
         for i in self.levels:
             if self.check_possible(i):
-                ch = chromosome.Population(i)
-                s = ch.calling_methods()
-                self.scores.append(s)
-                del ch
-                #self.scores.append(chromosome.Population(i).calling_methods())
+                print("game level" , i)
+                self.play(i)
                 print("level", i, "score:", self.scores[-1])
             else:
                 print("goal is not accessible")
+
+    def play(self, level):
+        newPopulation = population.Population(level)
+        s = newPopulation.calling_methods()
+        self.scores.append(s)
 
     # check if this level is possible
     def check_possible(self, level):

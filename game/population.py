@@ -2,9 +2,6 @@ import random
 import outputReport
 
 class Population:
-    average = []
-    best = []
-    worst = []
     select_list = dict()
     pop_score = dict()
     chromosome_num = 200
@@ -12,6 +9,9 @@ class Population:
     def __init__(self, level):
 
         self.level = level
+        self.average = []
+        self.best = []
+        self.worst = []
 
     # make Population.chromosome_num chromosome
     def makePopulation(self):
@@ -78,10 +78,10 @@ class Population:
     # select the best half of population
     def select(self):
         population_score = {k: v for k, v in sorted(Population.pop_score.items(), key=lambda item: item[1])}
-        Population.worst.append(list(Population.pop_score.items())[0][1])
-        Population.best.append(list(Population.pop_score.items())[-1][1])
+        self.worst.append(list(Population.pop_score.items())[0][1])
+        self.best.append(list(Population.pop_score.items())[-1][1])
         filtered_vals = [v for _, v in population_score.items()]
-        Population.average.append(sum(filtered_vals) / len(filtered_vals))
+        self.average.append(sum(filtered_vals) / len(filtered_vals))
         Population.select_list = {k: population_score[k] for k in list(population_score)[Population.chromosome_num//2:]}
 
 
@@ -103,7 +103,7 @@ class Population:
                 parent1str = list(Population.select_list.items())[parent1][0]
                 parent2str = list(Population.select_list.items())[parent2][0]
                 if t==6:
-                    parent1str = parent1str.replace('1','0',1)
+                    parent1str = parent1str.replace('1','0', 1)
 
                 child1 = parent1str[:t] + parent2str[t:]
                 child2 = parent2str[:t] + parent1str[t:]
@@ -151,10 +151,10 @@ class Population:
             self.crossOver()
             self.mutation()
 
-        print("population best", Population.average)
-        outputReport.drawing_average_best_worst(Population.average, Population.best, Population.worst)
+        print("population average", self.average)
+        outputReport.drawing_average_best_worst(self.average, self.best, self.worst)
 
-        return max(Population.best)
+        return max(self.best)
 
 
 #chromosome = Population('____G_____')
