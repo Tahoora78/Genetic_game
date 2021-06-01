@@ -31,5 +31,5 @@ class Game:
                 return False
         return True
 
-g = Game(["__G___L_", "__M_____", "____G_____","__G__G_L___","__G__G_L___"])
+g = Game(["__M_____", "____G_____", "__G___L_", "__G__G_L___","____G_ML__G_", "____G_MLGL_G_", "_M_M_GM___LL__G__L__G_M__", "____G_G_MMM___L__L_G_____G___M_L__G__L_GM____L____", "___M____MGM________M_M______M____L___G____M____L__G__GM__L____ML__G___G___L___G__G___M__L___G____M__", "_G___M_____LL_____G__G______L_____G____MM___G_G____LML____G___L____LMG___G___GML______G____L___MG___"])
 g.playEachLevel()
